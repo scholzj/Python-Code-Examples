@@ -16,7 +16,7 @@ This example connects to the broker,connects to the broker, sends a request mess
 # qpid_messaging
 
 Examples in qpid_messaging folder are using the C++ version Qpid Messaging API and its Python binding. The C++ version of the API supports both AMQP 1.0 and 0-10. To run the examples:
-- Install Qpid Proton C library
+- Install Qpid Proton C library (only needed for AMQP 1.0 support)
 - Install Qpid Messaging C++ API
 - Install Python binding for Qpid Messaging C++ API
 - Change the hostname / IP address, port number, paths to the certificates and queue names
