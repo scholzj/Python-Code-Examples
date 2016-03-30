@@ -20,6 +20,7 @@ class RequestResponse:
                                 "arguments: {'qpid.policy_type': ring, 'qpid.max_count': 1000, 'qpid.max_size': 1000000}}, " \
                                 "x-bindings: [{exchange: 'response', queue: 'response." + self.options.accountName + ".response_queue_1', " \
                                 "key: 'response." + self.options.accountName + ".response_queue_1'}]}}";
+        self.message_counter = 0
 
     def run(self):
         try:
@@ -40,7 +41,7 @@ class RequestResponse:
                 session.acknowledge(sync=False)
 
                 print "-I- Response received with content: ", message.content
-
+                self.message_counter = 1
             except Empty:
                 print "-I- No response received for ", self.options.timeout, " seconds"
 
