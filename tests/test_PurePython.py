@@ -2,8 +2,12 @@ import unittest
 
 from pure_python.Options import Options
 from pure_python.BroadcastReceiver import BroadcastReceiver
+from pure_python.RequestResponse import RequestResponse
+
+from utils.Responder import Responder
 
 from qpid.messaging import *
+
 
 class PurePythonTests(unittest.TestCase):
     def setUp(self):
@@ -28,6 +32,16 @@ class PurePythonTests(unittest.TestCase):
         br.run()
 
         self.assertGreaterEqual(br.message_counter, 1)
+
+
+    def test_requestResponse(self):
+        responder = Responder(self.options.hostname, 29700, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1.EUREX", 5)
+        responder.start()
+
+        rr = RequestResponse(self.options)
+        rr.run()
+
+        self.assertGreaterEqual(rr.message_counter, 1)
 
 if __name__ == '__main__':
     unittest.main()
