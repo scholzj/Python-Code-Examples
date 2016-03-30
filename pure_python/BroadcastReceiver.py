@@ -7,8 +7,8 @@ from qpid.messaging import *
 # from qpid.log import enable, DEBUG
 # enable("qpid", DEBUG)
 
+
 class BroadcastReceiver:
-    timeout = 60
     block_size = 100
     capacity = 1000
 
@@ -16,6 +16,7 @@ class BroadcastReceiver:
         self.options = options
         self.broadcast_address = "broadcast." + self.options.accountName + ".TradeConfirmation; " \
                                  "{ node: { type: queue } , create: never , mode: consume , assert: never }"
+        self.message_counter = 0
 
     def run(self):
         message_counter = 0
@@ -34,19 +35,19 @@ class BroadcastReceiver:
                 received_message = None
 
                 try:
-                    received_message = receiver.fetch(timeout=self.timeout)
+                    received_message = receiver.fetch(timeout=self.options.timeout)
                 except Empty:
                     session.acknowledge(sync=True)
-                    print "-I- No message received for ", self.timeout, " seconds"
+                    print "-I- No message received for ", self.options.timeout, " seconds"
                     break
 
-                message_counter += 1
+                self.message_counter += 1
                 print "-I- Received message containing: ", received_message.content
 
-                if message_counter % self.block_size == 0:
+                if self.message_counter % self.block_size == 0:
                     session.acknowledge(sync=True)
 
-            print "-I- ", message_counter, " messages received"
+            print "-I- ", self.message_counter, " messages received"
 
             receiver.close()
             session.close()
@@ -54,22 +55,15 @@ class BroadcastReceiver:
         except MessagingError, m:
             print "-E- Caught exception: ", m
 
+if __name__ == "__main__":
+    hostname = "ecag-fixml-simu1.deutsche-boerse.com"
+    port = 10170
+    accountName = "ABCFR_ABCFRALMMACC1"
+    accountPrivateKey = "ABCFR_ABCFRALMMACC1.pem"
+    accountPublicKey = "ABCFR_ABCFRALMMACC1.crt"
+    brokerPublicKey = "ecag-fixml-simu1.deutsche-boerse.com.crt"
 
-hostname = "ecag-fixml-simu1.deutsche-boerse.com"
-port = 10170
-accountName = "ABCFR_ABCFRALMMACC1"
-accountPrivateKey = "ABCFR_ABCFRALMMACC1.pem"
-accountPublicKey = "ABCFR_ABCFRALMMACC1.crt"
-brokerPublicKey = "ecag-fixml-simu1.deutsche-boerse.com.crt"
+    opts = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey)
 
-hostname = "cbgc01"
-port = 19700
-accountName = "ABCFR_ABCFRALMMACC1"
-accountPrivateKey = "ABCFR_ABCFRALMMACC1.pem"
-accountPublicKey = "ABCFR_ABCFRALMMACC1.crt"
-brokerPublicKey = "cbgc01.crt"
-
-opts = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey)
-
-br = BroadcastReceiver(opts)
-br.run()
+    br = BroadcastReceiver(opts)
+    br.run()

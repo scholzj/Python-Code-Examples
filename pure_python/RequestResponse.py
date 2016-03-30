@@ -3,14 +3,12 @@
 from Options import Options
 from qpid.messaging import *
 
-
 # Uncomment the following lines to enable protocol logging
 # from qpid.log import enable, DEBUG
 # enable("qpid", DEBUG)
 
-class RequestResponse:
-    timeout = 60
 
+class RequestResponse:
     def __init__(self, options):
         self.options = options
         self.request_address = "request." + self.options.accountName + "/request; " \
@@ -38,13 +36,13 @@ class RequestResponse:
             sender.send(message, sync=True);
 
             try:
-                message = receiver.fetch(timeout=self.timeout)
+                message = receiver.fetch(timeout=self.options.timeout)
                 session.acknowledge(sync=False)
 
                 print "-I- Response received with content: ", message.content
 
             except Empty:
-                print "-I- No response received for ", self.timeout, " seconds"
+                print "-I- No response received for ", self.options.timeout, " seconds"
 
             session.sync(timeout=None)
 
@@ -55,21 +53,15 @@ class RequestResponse:
         except MessagingError, m:
             print "-E- Caught exception: ", m
 
-hostname = "ecag-fixml-simu1.deutsche-boerse.com"
-port = 10170
-accountName = "ABCFR_ABCFRALMMACC1"
-accountPrivateKey = "ABCFR_ABCFRALMMACC1.pem"
-accountPublicKey = "ABCFR_ABCFRALMMACC1.crt"
-brokerPublicKey = "ecag-fixml-simu1.deutsche-boerse.com.crt"
+if __name__ == "__main__":
+    hostname = "ecag-fixml-simu1.deutsche-boerse.com"
+    port = 10170
+    accountName = "ABCFR_ABCFRALMMACC1"
+    accountPrivateKey = "ABCFR_ABCFRALMMACC1.pem"
+    accountPublicKey = "ABCFR_ABCFRALMMACC1.crt"
+    brokerPublicKey = "ecag-fixml-simu1.deutsche-boerse.com.crt"
 
-hostname = "cbgc01"
-port = 19700
-accountName = "ABCFR_ABCFRALMMACC1"
-accountPrivateKey = "ABCFR_ABCFRALMMACC1.pem"
-accountPublicKey = "ABCFR_ABCFRALMMACC1.crt"
-brokerPublicKey = "cbgc01.crt"
+    opts = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey)
 
-opts = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey)
-
-rr = RequestResponse(opts)
-rr.run()
+    rr = RequestResponse(opts)
+    rr.run()
