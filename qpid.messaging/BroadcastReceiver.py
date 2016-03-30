@@ -52,7 +52,7 @@ class BroadcastReceiver:
             session.close()
             connection.close()
         except MessagingError, m:
-            print "Caught exception: ", m
+            print "-E- Caught exception: ", m
 
 
 hostname = "ecag-fixml-simu1.deutsche-boerse.com"

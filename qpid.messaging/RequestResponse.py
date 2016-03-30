@@ -44,7 +44,7 @@ class RequestResponse:
                 print "-I- Response received with content: ", message.content
 
             except Empty:
-                print "-E- No response received for ", self.timeout, " seconds"
+                print "-I- No response received for ", self.timeout, " seconds"
 
             session.sync(timeout=None)
 
@@ -53,7 +53,7 @@ class RequestResponse:
             session.close()
             connection.close()
         except MessagingError, m:
-            print "Caught exception: ", m
+            print "-E- Caught exception: ", m
 
 hostname = "ecag-fixml-simu1.deutsche-boerse.com"
 port = 10170
