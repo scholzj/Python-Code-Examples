@@ -37,7 +37,7 @@ class PurePythonTests(unittest.TestCase):
 
 
     def test_requestResponse(self):
-        responder = Responder(self.options.hostname, 35672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1.EUREX", 5)
+        responder = Responder(self.options.hostname, 35672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1", 5)
         responder.start()
 
         rr = RequestResponse(self.options)

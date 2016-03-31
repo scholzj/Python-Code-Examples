@@ -36,7 +36,7 @@ class CppBindingTests(unittest.TestCase):
 
 
     def test_requestResponse(self):
-        responder = Responder(self.options.hostname, 35672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1.EUREX", 5)
+        responder = Responder(self.options.hostname, 35672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1", 5)
         responder.start()
 
         rr = RequestResponse(self.options)
@@ -59,7 +59,7 @@ class CppBindingTests(unittest.TestCase):
         self.assertGreaterEqual(br.message_counter, 1)
 
     def test_amqp10RequestResponse(self):
-        responder = Responder(self.options.hostname, 35672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1.EUREX", 5)
+        responder = Responder(self.options.hostname, 35672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1", 5)
         responder.start()
 
         rr = Amqp10RequestResponse(self.options)
