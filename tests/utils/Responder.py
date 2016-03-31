@@ -36,3 +36,4 @@ class Responder(threading.Thread):
 
         except MessagingError, m:
             print "-E- Caught exception in responder: ", m
+            raise m
