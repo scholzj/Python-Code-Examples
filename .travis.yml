@@ -1,5 +1,8 @@
 language: python
 
+python:
+  - "2.7"
+
 sudo: required
 
 services:
@@ -13,6 +16,7 @@ before_install:
   - sudo add-apt-repository ppa:qpid/released  --yes
   - sudo apt-get update -q
   - sudo apt-get install -q -y libsasl2-2 libsasl2-modules libsasl2-modules-db libqpid-proton4 libqpidclient2 libqpidcommon2 libqpidmessaging2 libqpidtypes1 python-qpid python-qpid-messaging qpid-tools
+  - virtualenv -p /usr/bin/python2.7 --system-site-packages env
   - docker pull scholzj/fixml:sim
 
 install:
