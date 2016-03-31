@@ -1,0 +1,31 @@
+language: python
+
+python:
+  - "2.7"
+
+sudo: required
+
+services:
+  - docker
+
+virtualenv:
+  system_site_packages: true
+
+env:
+  - QPID_SSL_CERT_DB=sql:./tests/resources/ QPID_SSL_CERT_PASSWORD_FILE=tests/resources/pwdfile QPID_SSL_CERT_NAME=ABCFR_ABCFRALMMACC1
+
+addons:
+  hosts:
+    - ecag-fixml-dev1
+
+before_install:
+  - sudo add-apt-repository ppa:qpid/released  --yes
+  - sudo apt-get update -q
+  - sudo apt-get install -q -y libsasl2-2 libsasl2-modules libsasl2-modules-db libqpid-proton4 libqpidclient2 libqpidcommon2 libqpidmessaging2 libqpidtypes1 python-qpid python-qpid-messaging qpid-tools
+  - docker pull scholzj/fixml:sim
+
+install:
+  - docker run -d -p 35672:5672 -p 35671:5671 scholzj/fixml:sim
+
+script:
+   - ./run_tests.py
