@@ -19,8 +19,6 @@ class BroadcastReceiver:
         self.message_counter = 0
 
     def run(self):
-        message_counter = 0
-
         try:
             connection = Connection(host=self.options.hostname, port=self.options.port,
                                     username=self.options.accountName, sasl_mechanisms="EXTERNAL", transport="ssl",

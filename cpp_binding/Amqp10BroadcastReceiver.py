@@ -15,8 +15,6 @@ class Amqp10BroadcastReceiver:
         self.message_counter = 0
 
     def run(self):
-        message_counter = 0
-
         try:
             connection = Connection("amqp:ssl:" + self.options.hostname + ":" + str(self.options.port), protocol="amqp1.0")
             connection.setOption("sasl_mechanisms", "EXTERNAL")
