@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import unittest
 
 from cpp_binding.Options import Options

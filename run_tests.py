@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import unittest
 import sys
 import tests.test_PurePython

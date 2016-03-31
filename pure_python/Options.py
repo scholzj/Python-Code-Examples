@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/env python
 
 class Options:
     def __init__(self, hostname="", port="", account_name="", account_public_key="", account_private_key="", broker_public_key="", timeout=60):
