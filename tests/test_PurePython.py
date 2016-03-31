@@ -11,16 +11,16 @@ from qpid.messaging import *
 
 class PurePythonTests(unittest.TestCase):
     def setUp(self):
-        hostname = "cbgc01"
-        port = 19700
+        hostname = "ecag-fixml-dev1"
+        port = 35671
         accountName = "ABCFR_ABCFRALMMACC1"
         accountPrivateKey = "./tests/resources/ABCFR_ABCFRALMMACC1.pem"
         accountPublicKey = "./tests/resources/ABCFR_ABCFRALMMACC1.crt"
-        brokerPublicKey = "./tests/resources/cbgc01.crt"
+        brokerPublicKey = "./tests/resources/ecag-fixml-dev1.crt"
         self.options = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey, timeout=5)
 
     def test_broadcastReceiver(self):
-        connection = Connection(host=self.options.hostname, port=29700,
+        connection = Connection(host=self.options.hostname, port=35672,
                                 username="admin", password="admin", heartbeat=60)
         connection.open()
         session = connection.session()
@@ -35,7 +35,7 @@ class PurePythonTests(unittest.TestCase):
 
 
     def test_requestResponse(self):
-        responder = Responder(self.options.hostname, 29700, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1.EUREX", 5)
+        responder = Responder(self.options.hostname, 35672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1.EUREX", 5)
         responder.start()
 
         rr = RequestResponse(self.options)
