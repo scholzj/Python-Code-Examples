@@ -12,9 +12,9 @@ addons:
 before_install:
   - sudo add-apt-repository ppa:qpid/released  --yes
   - sudo apt-get update -q
-  - sudo apt-get install -q libsasl2-2 libsasl2-modules libsasl2-modules-db qpid-python qpid-cpp
+  - sudo apt-get install -q libsasl2-2 libsasl2-modules libsasl2-modules-db libqpid-proton4 libqpidclient2 libqpidcommon2 libqpidmessaging2 libqpidtypes1 python-qpid python-qpid-messaging qpid-tools
   - docker pull scholzj/fixml:sim
-
+  
 install:
   - docker run -d -p 35672:5672 -p 35671:5671 scholzj/fixml:sim
 
