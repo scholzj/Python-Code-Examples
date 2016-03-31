@@ -12,9 +12,7 @@ virtualenv:
   system_site_packages: true
 
 env:
-  - QPID_SSL_CERT_DB=sql:./tests/resources/
-  - QPID_SSL_CERT_PASSWORD_FILE=tests/resources/pwdfile
-  - QPID_SSL_CERT_NAME=ABCFR_ABCFRALMMACC1
+  - QPID_SSL_CERT_DB=sql:./tests/resources/ QPID_SSL_CERT_PASSWORD_FILE=tests/resources/pwdfile QPID_SSL_CERT_NAME=ABCFR_ABCFRALMMACC1
 
 addons:
   hosts:
