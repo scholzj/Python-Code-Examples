@@ -11,6 +11,7 @@ class Requestor(MessagingHandler):
     def __init__(self, opts):
         super(Requestor, self).__init__(prefetch=1000, auto_accept=False, peer_close_is_error=True)
         self.options = opts
+        self.address = "amqp:ssl:" + self.options.hostname + ":" + str(self.options.port)
         self.request_address = "request." + self.options.accountName
         self.reply_adress = "response/response." + self.options.accountName
         self.response_address = "response." + self.options.accountName
@@ -25,7 +26,7 @@ class Requestor(MessagingHandler):
         #ssl.set_peer_authentication(SSLDomain.VERIFY_PEER_NAME, trusted_CAs=str(self.options.brokerPublicKey))
         #ssl.set_trusted_ca_db(str(self.options.brokerPublicKey))
 
-        conn = event.container.connect("amqps://" + self.options.hostname + ":" + str(self.options.port), ssl_domain=ssl, heartbeat=60000, allowed_mechs=str("EXTERNAL"))
+        conn = event.container.connect(self.address, ssl_domain=ssl, heartbeat=60000, allowed_mechs=str("EXTERNAL"))
         event.container.create_receiver(conn, self.response_address)
         self.sender = event.container.create_sender(conn, self.request_address)
 
