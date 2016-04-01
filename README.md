@@ -72,7 +72,7 @@ This example works in the same way as RequestResponse.py, only using AMQP 1.0.
 
 # proton_binding
 
-Examples in the proton_binding folder are using the Python binding against the Apache Qpid Proton C library. This API supports only AMQP 0-10. To run the examples:
+Examples in the proton_binding folder are using the Python binding against the Apache Qpid Proton C library. This API supports only AMQP 1.0. To run the examples:
 - Download and install the Qpid Proton library either from the repositories of your OS or from http://qpid.apache.org/download.html
 - Download and install the Python binding for the Proton library either from the repositories of your OS or from http://qpid.apache.org/download.html
 - Change the hostname / IP address, port number, paths to the certificates and account name / queue name
@@ -89,6 +89,15 @@ This example connects to the AMQP broker, opens a consumer to the broadcast queu
 ## RequestResponse.py
 
 This example connects to the broker, sends a request message and waits for a response, which should be sent by the Eurex system. It stops after receiving the response message. This example is using Proton Reactor - it is written in reactive style.
+
+## BlockingBroadcastReceiver.py
+
+This example connects to the AMQP broker, opens a consumer to the broadcast queue and starts consuming the broadcasts. It consumes them for a predefined time interval and exits afterwards. This example is using more traditional blocking API.
+
+## BlockingRequestResponse.py
+
+This example connects to the broker, sends a request message and waits for a response, which should be sent by the Eurex system. It stops after receiving the response message. This example is using more traditional blocking API.
+
 
 # Integration tests
 
