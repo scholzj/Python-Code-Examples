@@ -9,7 +9,7 @@ from Options import Options
 
 class Receiver(MessagingHandler):
     def __init__(self, opts):
-        super(Receiver, self).__init__()
+        super(Receiver, self).__init__(prefetch=1000, auto_accept=False, peer_close_is_error=True)
         self.options = opts
         self.message_counter = 0
 
@@ -17,7 +17,7 @@ class Receiver(MessagingHandler):
         self.container = event.container
 
         ssl = SSLDomain(SSLDomain.MODE_CLIENT)
-        ssl.set_credentials(str("../tests/resources/local/ABCFR_ABCFRALMMACC1.crt"), str("../tests/resources/local/ABCFR_ABCFRALMMACC1.pem"), str(""))
+        ssl.set_credentials(str(self.options.accountPublicKey), str(self.options.accountPrivateKey, str(""))
         #ssl.set_peer_authentication(SSLDomain.VERIFY_PEER_NAME, trusted_CAs=str("../tests/resources/local/cbgc01.crt"))
         #ssl.set_trusted_ca_db(str("../tests/resources/local/cbgc01.crt"))
 
@@ -27,6 +27,7 @@ class Receiver(MessagingHandler):
     def on_message(self, event):
         print("Received broadcast message: " + event.message.body)
         self.message_counter = self.message_counter + 1
+        self.accept(event.delivery)
 
     def on_stop(self, event):
         event.connection.close()
@@ -56,7 +57,7 @@ if __name__ == "__main__":
     accountPrivateKey = "ABCFR_ABCFRALMMACC1.pem"
     accountPublicKey = "ABCFR_ABCFRALMMACC1.crt"
     brokerPublicKey = "ecag-fixml-simu1.deutsche-boerse.com.crt"
-    timeout = 60
+    timeout = 10
 
     hostname = "cbgc01.xeop.de"
     port = 19700
