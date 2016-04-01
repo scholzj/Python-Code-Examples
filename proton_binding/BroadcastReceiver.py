@@ -24,8 +24,8 @@ class Receiver(MessagingHandler):
 
         ssl = SSLDomain(SSLDomain.MODE_CLIENT)
         ssl.set_credentials(str(self.options.accountPublicKey), str(self.options.accountPrivateKey), str(""))
-        #ssl.set_peer_authentication(SSLDomain.VERIFY_PEER_NAME, trusted_CAs=str(self.options.brokerPublicKey))
-        #ssl.set_trusted_ca_db(str(self.options.brokerPublicKey))
+        ssl.set_trusted_ca_db(str(self.options.brokerPublicKey))
+        ssl.set_peer_authentication(SSLDomain.VERIFY_PEER_NAME, trusted_CAs=str(self.options.brokerPublicKey))
 
         conn = event.container.connect(self.address, ssl_domain=ssl, heartbeat=60000, allowed_mechs=str("EXTERNAL"))
         event.container.create_receiver(conn, self.broadcast_address)
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     accountPrivateKey = "ABCFR_ABCFRALMMACC1.pem"
     accountPublicKey = "ABCFR_ABCFRALMMACC1.crt"
     brokerPublicKey = "ecag-fixml-simu1.deutsche-boerse.com.crt"
-    timeout = 60
+    timeout = 10
 
     opts = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey, timeout)
     br = BroadcastReceiver(opts)

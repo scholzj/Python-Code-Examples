@@ -20,6 +20,8 @@ class BlockingBroadcastReceiver:
         try:
             ssl = SSLDomain(SSLDomain.MODE_CLIENT)
             ssl.set_credentials(str(self.options.accountPublicKey), str(self.options.accountPrivateKey), str(""))
+            ssl.set_trusted_ca_db(str(self.options.brokerPublicKey))
+            ssl.set_peer_authentication(SSLDomain.VERIFY_PEER_NAME, trusted_CAs=str(self.options.brokerPublicKey))
 
             connection = BlockingConnection(self.address, ssl_domain=ssl, heartbeat=60000)
             receiver = connection.create_receiver(self.broadcast_address, credit=self.capacity)
