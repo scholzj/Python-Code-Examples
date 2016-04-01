@@ -62,7 +62,7 @@ if __name__ == "__main__":
     accountPrivateKey = "ABCFR_ABCFRALMMACC1.pem"
     accountPublicKey = "ABCFR_ABCFRALMMACC1.crt"
     brokerPublicKey = "ecag-fixml-simu1.deutsche-boerse.com.crt"
-    timeout = 180
+    timeout = 60
 
     hostname = "cbgc01.xeop.de"
     port = 19700

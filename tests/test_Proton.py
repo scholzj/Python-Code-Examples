@@ -18,7 +18,8 @@ class ProtonTests(unittest.TestCase):
         accountPrivateKey = "./tests/resources/ABCFR_ABCFRALMMACC1.pem"
         accountPublicKey = "./tests/resources/ABCFR_ABCFRALMMACC1.crt"
         brokerPublicKey = "./tests/resources/ecag-fixml-dev1.crt"
-        self.options = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey)
+        timeout = 5
+        self.options = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey, timeout)
 
     def test_broadcastReceiver(self):
         broadcaster = Broadcaster(self.options.hostname, 35672, "admin", "admin", "broadcast", "broadcast.ABCFR.TradeConfirmation", 1)
