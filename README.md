@@ -84,11 +84,11 @@ The public and private keys are passed to the client library in the form of file
 
 ## BroadcastReceiver.py
 
-This example connects to the AMQP broker, opens a consumer to the broadcast queue and starts consuming the broadcasts. It consumes them for a predefined time interval and exits afterwards.
+This example connects to the AMQP broker, opens a consumer to the broadcast queue and starts consuming the broadcasts. It consumes them for a predefined time interval and exits afterwards. This example is using Proton Reactor - it is written in reactive style.
 
 ## RequestResponse.py
 
-This example connects to the broker, sends a request message and waits for a response, which should be sent by the Eurex system. It stops after receiving the response message or after time out.
+This example connects to the broker, sends a request message and waits for a response, which should be sent by the Eurex system. It stops after receiving the response message. This example is using Proton Reactor - it is written in reactive style.
 
 # Integration tests
 
