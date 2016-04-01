@@ -29,14 +29,14 @@ class ProtonTests(unittest.TestCase):
 
         self.assertGreaterEqual(br.message_counter, 1)
 
-#    def test_requestResponse(self):
-#        responder = Responder(self.options.hostname, 35672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1", 5)
-        #responder.start()
-        #
-        #rr = RequestResponse(self.options)
-        #rr.run()
-        #
-        #self.assertGreaterEqual(rr.message_counter, 1)
+    def test_requestResponse(self):
+        responder = Responder(self.options.hostname, 35672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1", 5)
+        responder.start()
+
+        rr = RequestResponse(self.options)
+        rr.run()
+
+        self.assertGreaterEqual(rr.message_counter, 1)
 
 if __name__ == '__main__':
     unittest.main()

@@ -21,12 +21,12 @@ class Receiver(MessagingHandler):
         #ssl.set_peer_authentication(SSLDomain.VERIFY_PEER_NAME, trusted_CAs=str(self.options.brokerPublicKey))
         #ssl.set_trusted_ca_db(str(self.options.brokerPublicKey))
 
-        conn = event.container.connect("amqps://" + self.options.hostname + ":" + str(self.options.port), ssl_domain=ssl, allowed_mechs=str("EXTERNAL"))
-        event.container.create_receiver(conn, "broadcast.ABCFR_ABCFRALMMACC1.TradeConfirmation")
+        conn = event.container.connect("amqps://" + self.options.hostname + ":" + str(self.options.port), ssl_domain=ssl, heartbeat=60000, allowed_mechs=str("EXTERNAL"))
+        event.container.create_receiver(conn, "broadcast." + self.options.accountName + ".TradeConfirmation")
 
     def on_message(self, event):
-        print("Received broadcast message: " + event.message.body)
-        self.message_counter = self.message_counter + 1
+        print("-I- Received broadcast message: " + event.message.body)
+        self.message_counter += 1
         self.accept(event.delivery)
 
     def on_stop(self, event):
@@ -48,7 +48,7 @@ class BroadcastReceiver:
         sleep(self.options.timeout)
 
         self.message_counter = receiver.message_counter
-        print("Received in total " + str(self.message_counter) + " messages")
+        print("-I- Received in total " + str(self.message_counter) + " messages")
 
 if __name__ == "__main__":
     hostname = "ecag-fixml-simu1.deutsche-boerse.com"
@@ -57,14 +57,14 @@ if __name__ == "__main__":
     accountPrivateKey = "ABCFR_ABCFRALMMACC1.pem"
     accountPublicKey = "ABCFR_ABCFRALMMACC1.crt"
     brokerPublicKey = "ecag-fixml-simu1.deutsche-boerse.com.crt"
-    timeout = 10
+    timeout = 180
 
     hostname = "cbgc01.xeop.de"
     port = 19700
     accountName = "ABCFR_ABCFRALMMACC1"
-    accountPrivateKey = "./tests/resources/local/ABCFR_ABCFRALMMACC1.pem"
-    accountPublicKey = "./tests/resources/local/ABCFR_ABCFRALMMACC1.crt"
-    brokerPublicKey = "./tests/resources/local/cbgc01.crt"
+    accountPrivateKey = "../tests/resources/local/ABCFR_ABCFRALMMACC1.pem"
+    accountPublicKey = "../tests/resources/local/ABCFR_ABCFRALMMACC1.crt"
+    brokerPublicKey = "../tests/resources/local/cbgc01.crt"
 
     opts = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey, timeout)
     br = BroadcastReceiver(opts)

@@ -1,47 +1,75 @@
-from __future__ import print_function, unicode_literals
-import sys
 import threading
-from proton import Message, SSLDomain
-from proton.handlers import MessagingHandler, TransactionHandler
-from proton.reactor import ApplicationEvent, Container, EventInjector
+from time import sleep
 
-class BroadcastReceiver(MessagingHandler):
-    def __init__(self, server, address):
-        super(BroadcastReceiver, self).__init__()
-        self.server = server
-        self.address = address
+from proton import SSLDomain, Message
+from proton.handlers import MessagingHandler
+from proton.reactor import Container
+
+from Options import Options
+
+class Requestor(MessagingHandler):
+    def __init__(self, opts):
+        super(Requestor, self).__init__(prefetch=1000, auto_accept=False, peer_close_is_error=True)
+        self.options = opts
+        self.message_counter = 0
+        self.request_sent = False
 
     def on_start(self, event):
         self.container = event.container
 
         ssl = SSLDomain(SSLDomain.MODE_CLIENT)
-        ssl.set_credentials(str("../tests/resources/local/ABCFR_ABCFRALMMACC1.crt"), str("../tests/resources/local/ABCFR_ABCFRALMMACC1.pem"), str(""))
-        #ssl.set_peer_authentication(SSLDomain.VERIFY_PEER_NAME, trusted_CAs=str("../tests/resources/local/cbgc01.crt"))
-        #ssl.set_trusted_ca_db(str("../tests/resources/local/cbgc01.crt"))
+        ssl.set_credentials(str(self.options.accountPublicKey), str(self.options.accountPrivateKey), str(""))
+        #ssl.set_peer_authentication(SSLDomain.VERIFY_PEER_NAME, trusted_CAs=str(self.options.brokerPublicKey))
+        #ssl.set_trusted_ca_db(str(self.options.brokerPublicKey))
 
-        conn = event.container.connect(self.server, ssl_domain=ssl, allowed_mechs=str("EXTERNAL"))
-        event.container.create_receiver(conn, self.address)
-        self.sender = event.container.create_sender(conn, self.address)
+        conn = event.container.connect("amqps://" + self.options.hostname + ":" + str(self.options.port), ssl_domain=ssl, heartbeat=60000, allowed_mechs=str("EXTERNAL"))
+        event.container.create_receiver(conn, "response." + self.options.accountName)
+        self.sender = event.container.create_sender(conn, "request." + self.options.accountName)
 
     def on_sendable(self, event):
-        #event.sender.send(Message(body="Hello World!"))
-        #event.sender.close()
-        pass
+        if self.request_sent == False:
+            message = Message(body="<FIXML>...</FIXML>", reply_to="response/response." + self.options.accountName)
+            print("-I- Sending request message: " + message.body)
+            self.request_sent = True
+            self.sender.send(message)
+            self.sender.close()
 
     def on_message(self, event):
-        print(event.message.body)
-        #event.connection.close()
-    
-    def on_teeest(self, event):
-        self.sender.send(Message(body="aaaaaa"))
+        print("-I- Received response message: " + event.message.body)
+        self.message_counter += 1
+        self.accept(event.delivery)
+        event.receiver.close()
+        event.connection.close()
 
-reactor = Container(BroadcastReceiver("amqps://cbgc01.xeop.de:19700", "broadcast.ABCFR_ABCFRALMMACC1.TradeConfirmation"))
-events = EventInjector()
-reactor.selectable(events) 
-thread = threading.Thread(target=reactor.run)
-thread.daemon=True
-thread.start()
+class RequestResponse:
+    def __init__(self, options):
+        self.options = options
+        self.message_counter = 0
 
-while True:
-    line = sys.stdin.readline()
-    events.trigger(ApplicationEvent("teeest"))
+    def run(self):
+        requestor = Requestor(self.options)
+        reactor = Container(requestor)
+        reactor.run()
+        self.message_counter = requestor.message_counter
+        print("-I- Received in total " + str(self.message_counter) + " responses")
+
+if __name__ == "__main__":
+    hostname = "ecag-fixml-simu1.deutsche-boerse.com"
+    port = 10170
+    accountName = "ABCFR_ABCFRALMMACC1"
+    accountPrivateKey = "ABCFR_ABCFRALMMACC1.pem"
+    accountPublicKey = "ABCFR_ABCFRALMMACC1.crt"
+    brokerPublicKey = "ecag-fixml-simu1.deutsche-boerse.com.crt"
+    timeout = 180
+
+    hostname = "cbgc01.xeop.de"
+    port = 19700
+    accountName = "ABCFR_ABCFRALMMACC1"
+    accountPrivateKey = "../tests/resources/local/ABCFR_ABCFRALMMACC1.pem"
+    accountPublicKey = "../tests/resources/local/ABCFR_ABCFRALMMACC1.crt"
+    brokerPublicKey = "../tests/resources/local/cbgc01.crt"
+
+    opts = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey, timeout)
+    rr = RequestResponse(opts)
+    rr.run()
+
