@@ -50,13 +50,6 @@ if __name__ == "__main__":
     brokerPublicKey = "ecag-fixml-simu1.deutsche-boerse.com.crt"
     timeout = 60
 
-    hostname = "cbgc01.xeop.de"
-    port = 19700
-    accountName = "ABCFR_ABCFRALMMACC1"
-    accountPrivateKey = "../tests/resources/local/ABCFR_ABCFRALMMACC1.pem"
-    accountPublicKey = "../tests/resources/local/ABCFR_ABCFRALMMACC1.crt"
-    brokerPublicKey = "../tests/resources/local/cbgc01.crt"
-
     opts = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey, timeout)
     rr = BlockingRequestResponse(opts)
     rr.run()
