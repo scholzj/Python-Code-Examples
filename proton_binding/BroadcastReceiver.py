@@ -17,9 +17,9 @@ class Receiver(MessagingHandler):
         self.container = event.container
 
         ssl = SSLDomain(SSLDomain.MODE_CLIENT)
-        ssl.set_credentials(str(self.options.accountPublicKey), str(self.options.accountPrivateKey, str(""))
-        #ssl.set_peer_authentication(SSLDomain.VERIFY_PEER_NAME, trusted_CAs=str("../tests/resources/local/cbgc01.crt"))
-        #ssl.set_trusted_ca_db(str("../tests/resources/local/cbgc01.crt"))
+        ssl.set_credentials(str(self.options.accountPublicKey), str(self.options.accountPrivateKey), str(""))
+        #ssl.set_peer_authentication(SSLDomain.VERIFY_PEER_NAME, trusted_CAs=str(self.options.brokerPublicKey))
+        #ssl.set_trusted_ca_db(str(self.options.brokerPublicKey))
 
         conn = event.container.connect("amqps://" + self.options.hostname + ":" + str(self.options.port), ssl_domain=ssl, allowed_mechs=str("EXTERNAL"))
         event.container.create_receiver(conn, "broadcast.ABCFR_ABCFRALMMACC1.TradeConfirmation")
