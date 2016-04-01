@@ -11,8 +11,8 @@ class Broadcaster():
 
     def run(self):
         try:
-            connection = Connection(host=self.options.hostname, port=35672,
-                                    username="admin", password="admin", heartbeat=60)
+            connection = Connection(host=self.hostname, port=self.port,
+                                    username=self.username, password=self.password, heartbeat=60)
             connection.open()
             session = connection.session()
             sender = session.sender(self.broadcast_address)
