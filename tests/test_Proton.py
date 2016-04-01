@@ -4,7 +4,9 @@ import unittest
 
 from proton_binding.Options import Options
 from proton_binding.BroadcastReceiver import BroadcastReceiver
-from pure_python.RequestResponse import RequestResponse
+from proton_binding.RequestResponse import RequestResponse
+from proton_binding.BlockingRequestResponse import BlockingRequestResponse
+from proton_binding.BlockingBroadcastReceiver import BlockingBroadcastReceiver
 
 from utils.Responder import Responder
 from utils.Broadcaster import Broadcaster
@@ -35,6 +37,25 @@ class ProtonTests(unittest.TestCase):
         responder.start()
 
         rr = RequestResponse(self.options)
+        rr.run()
+
+        self.assertGreaterEqual(rr.message_counter, 1)
+
+    def test_blockingBroadcastReceiver(self):
+        broadcaster = Broadcaster(self.options.hostname, 35672, "admin", "admin", "broadcast",
+                                  "broadcast.ABCFR.TradeConfirmation", 1)
+        broadcaster.run()
+
+        br = BlockingBroadcastReceiver(self.options)
+        br.run()
+
+        self.assertGreaterEqual(br.message_counter, 1)
+
+    def test_blockingRequestResponse(self):
+        responder = Responder(self.options.hostname, 35672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1", 5)
+        responder.start()
+
+        rr = BlockingRequestResponse(self.options)
         rr.run()
 
         self.assertGreaterEqual(rr.message_counter, 1)
