@@ -70,6 +70,26 @@ This example works in the same way as BroadcastReceiver.py, only using AMQP 1.0.
 
 This example works in the same way as RequestResponse.py, only using AMQP 1.0.
 
+# proton_binding
+
+Examples in the proton_binding folder are using the Python binding against the Apache Qpid Proton C library. This API supports only AMQP 0-10. To run the examples:
+- Download and install the Qpid Proton library either from the repositories of your OS or from http://qpid.apache.org/download.html
+- Download and install the Python binding for the Proton library either from the repositories of your OS or from http://qpid.apache.org/download.html
+- Change the hostname / IP address, port number, paths to the certificates and account name / queue name
+- Run the examples
+
+## SSL
+
+The public and private keys are passed to the client library in the form of file path. The client will open them and use them on its own.
+
+## BroadcastReceiver.py
+
+This example connects to the AMQP broker, opens a consumer to the broadcast queue and starts consuming the broadcasts. It consumes them for a predefined time interval and exits afterwards.
+
+## RequestResponse.py
+
+This example connects to the broker, sends a request message and waits for a response, which should be sent by the Eurex system. It stops after receiving the response message or after time out.
+
 # Integration tests
 
 The project is using Travis-CI to run its own integration tests. The tests are executed against Docker images which contain the AMQP broker with configuration corresponding to Eurex Clearing FIXML Interface. The details of the Travis-CI integration can be found in the .travis.yml file.
