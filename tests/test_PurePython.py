@@ -7,8 +7,7 @@ from pure_python.BroadcastReceiver import BroadcastReceiver
 from pure_python.RequestResponse import RequestResponse
 
 from utils.Responder import Responder
-
-from qpid.messaging import *
+from utils.Broadcaster import Broadcaster
 
 
 class PurePythonTests(unittest.TestCase):
@@ -22,13 +21,8 @@ class PurePythonTests(unittest.TestCase):
         self.options = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey, timeout=5)
 
     def test_broadcastReceiver(self):
-        connection = Connection(host=self.options.hostname, port=35672,
-                                username="admin", password="admin", heartbeat=60)
-        connection.open()
-        session = connection.session()
-        sender = session.sender("broadcast/broadcast.ABCFR.TradeConfirmation; { node: { type: topic }, assert: never }")
-        sender.send(Message("<FIXML>...</FIXML>", durable=True), sync=True);
-        connection.close();
+        broadcaster = Broadcaster(self.options.hostname, 35672, "admin", "admin", "broadcast", "broadcast.ABCFR.TradeConfirmation", 1)
+        broadcaster.run()
 
         br = BroadcastReceiver(self.options)
         br.run()

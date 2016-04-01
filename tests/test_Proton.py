@@ -2,22 +2,26 @@
 
 import unittest
 
-from cpp_binding.Options import Options
-from cpp_binding.BroadcastReceiver import BroadcastReceiver
-from cpp_binding.RequestResponse import RequestResponse
-from cpp_binding.Amqp10BroadcastReceiver import Amqp10BroadcastReceiver
-from cpp_binding.Amqp10RequestResponse import Amqp10RequestResponse
+from proton_binding.Options import Options
+from proton_binding.BroadcastReceiver import BroadcastReceiver
+from proton_binding.RequestResponse import RequestResponse
+from proton_binding.BlockingRequestResponse import BlockingRequestResponse
+from proton_binding.BlockingBroadcastReceiver import BlockingBroadcastReceiver
 
 from utils.Responder import Responder
 from utils.Broadcaster import Broadcaster
 
 
-class CppBindingTests(unittest.TestCase):
+class ProtonTests(unittest.TestCase):
     def setUp(self):
         hostname = "ecag-fixml-dev1"
         port = 35671
         accountName = "ABCFR_ABCFRALMMACC1"
-        self.options = Options(hostname, port, accountName, timeout=5)
+        accountPrivateKey = "./tests/resources/ABCFR_ABCFRALMMACC1.pem"
+        accountPublicKey = "./tests/resources/ABCFR_ABCFRALMMACC1.crt"
+        brokerPublicKey = "./tests/resources/ecag-fixml-dev1.crt"
+        timeout = 5
+        self.options = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey, timeout)
 
     def test_broadcastReceiver(self):
         broadcaster = Broadcaster(self.options.hostname, 35672, "admin", "admin", "broadcast", "broadcast.ABCFR.TradeConfirmation", 1)
@@ -37,20 +41,21 @@ class CppBindingTests(unittest.TestCase):
 
         self.assertGreaterEqual(rr.message_counter, 1)
 
-    def test_amqp10BroadcastReceiver(self):
-        broadcaster = Broadcaster(self.options.hostname, 35672, "admin", "admin", "broadcast", "broadcast.ABCFR.TradeConfirmation", 1)
+    def test_blockingBroadcastReceiver(self):
+        broadcaster = Broadcaster(self.options.hostname, 35672, "admin", "admin", "broadcast",
+                                  "broadcast.ABCFR.TradeConfirmation", 1)
         broadcaster.run()
 
-        br = Amqp10BroadcastReceiver(self.options)
+        br = BlockingBroadcastReceiver(self.options)
         br.run()
 
         self.assertGreaterEqual(br.message_counter, 1)
 
-    def test_amqp10RequestResponse(self):
+    def test_blockingRequestResponse(self):
         responder = Responder(self.options.hostname, 35672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1", 5)
         responder.start()
 
-        rr = Amqp10RequestResponse(self.options)
+        rr = BlockingRequestResponse(self.options)
         rr.run()
 
         self.assertGreaterEqual(rr.message_counter, 1)
