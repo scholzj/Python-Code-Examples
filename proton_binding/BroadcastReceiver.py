@@ -15,7 +15,7 @@ class Receiver(MessagingHandler):
     def __init__(self, opts):
         super(Receiver, self).__init__(prefetch=1000, auto_accept=False, peer_close_is_error=True)
         self.options = opts
-        self.address = "amqp:ssl:" + self.options.hostname + ":" + str(self.options.port)
+        self.address = "amqps://" + self.options.hostname + ":" + str(self.options.port)
         self.broadcast_address = "broadcast." + self.options.accountName + ".TradeConfirmation"
         self.message_counter = 0
 

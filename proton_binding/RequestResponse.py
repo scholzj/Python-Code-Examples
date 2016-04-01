@@ -11,7 +11,7 @@ class Requestor(MessagingHandler):
     def __init__(self, opts):
         super(Requestor, self).__init__(prefetch=1000, auto_accept=False, peer_close_is_error=True)
         self.options = opts
-        self.address = "amqp:ssl:" + self.options.hostname + ":" + str(self.options.port)
+        self.address = "amqps://" + self.options.hostname + ":" + str(self.options.port)
         self.request_address = "request." + self.options.accountName
         self.reply_adress = "response/response." + self.options.accountName
         self.response_address = "response." + self.options.accountName
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     accountPrivateKey = "ABCFR_ABCFRALMMACC1.pem"
     accountPublicKey = "ABCFR_ABCFRALMMACC1.crt"
     brokerPublicKey = "ecag-fixml-simu1.deutsche-boerse.com.crt"
-    timeout = 180
+    timeout = 60
 
     hostname = "cbgc01.xeop.de"
     port = 19700
