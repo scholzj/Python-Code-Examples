@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+
+from __future__ import print_function, unicode_literals
+
 import threading
 from time import sleep
 
@@ -11,6 +15,7 @@ class Receiver(MessagingHandler):
     def __init__(self, opts):
         super(Receiver, self).__init__(prefetch=1000, auto_accept=False, peer_close_is_error=True)
         self.options = opts
+        self.broadcast_address = "broadcast." + self.options.accountName + ".TradeConfirmation"
         self.message_counter = 0
 
     def on_start(self, event):
@@ -22,7 +27,7 @@ class Receiver(MessagingHandler):
         #ssl.set_trusted_ca_db(str(self.options.brokerPublicKey))
 
         conn = event.container.connect("amqps://" + self.options.hostname + ":" + str(self.options.port), ssl_domain=ssl, heartbeat=60000, allowed_mechs=str("EXTERNAL"))
-        event.container.create_receiver(conn, "broadcast." + self.options.accountName + ".TradeConfirmation")
+        event.container.create_receiver(conn, self.broadcast_address)
 
     def on_message(self, event):
         print("-I- Received broadcast message: " + event.message.body)

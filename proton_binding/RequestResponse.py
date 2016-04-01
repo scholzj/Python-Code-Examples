@@ -1,6 +1,6 @@
-import threading
-from time import sleep
+#!/usr/bin/env python
 
+from __future__ import print_function, unicode_literals
 from proton import SSLDomain, Message
 from proton.handlers import MessagingHandler
 from proton.reactor import Container
@@ -11,6 +11,9 @@ class Requestor(MessagingHandler):
     def __init__(self, opts):
         super(Requestor, self).__init__(prefetch=1000, auto_accept=False, peer_close_is_error=True)
         self.options = opts
+        self.request_address = "request." + self.options.accountName
+        self.reply_adress = "response/response." + self.options.accountName
+        self.response_address = "response." + self.options.accountName
         self.message_counter = 0
         self.request_sent = False
 
@@ -23,12 +26,12 @@ class Requestor(MessagingHandler):
         #ssl.set_trusted_ca_db(str(self.options.brokerPublicKey))
 
         conn = event.container.connect("amqps://" + self.options.hostname + ":" + str(self.options.port), ssl_domain=ssl, heartbeat=60000, allowed_mechs=str("EXTERNAL"))
-        event.container.create_receiver(conn, "response." + self.options.accountName)
-        self.sender = event.container.create_sender(conn, "request." + self.options.accountName)
+        event.container.create_receiver(conn, self.response_address)
+        self.sender = event.container.create_sender(conn, self.request_address)
 
     def on_sendable(self, event):
         if self.request_sent == False:
-            message = Message(body="<FIXML>...</FIXML>", reply_to="response/response." + self.options.accountName)
+            message = Message(body="<FIXML>...</FIXML>", reply_to=self.reply_adress)
             print("-I- Sending request message: " + message.body)
             self.request_sent = True
             self.sender.send(message)
