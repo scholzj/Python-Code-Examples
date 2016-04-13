@@ -19,9 +19,9 @@ addons:
     - ecag-fixml-dev1
 
 before_install:
-  - sudo add-apt-repository ppa:qpid/released  --yes
+  - sudo add-apt-repository ppa:qpid/testing  --yes
   - sudo apt-get update -q
-  - sudo apt-get install -q -y libsasl2-2 libsasl2-modules libsasl2-modules-db libqpid-proton4 libqpidclient2 libqpidcommon2 libqpidmessaging2 libqpidtypes1 python-qpid python-qpid-messaging qpid-tools python-qpid-proton
+  - sudo apt-get install -q -y libsasl2-2 libsasl2-modules libsasl2-modules-db libqpid-proton6 libqpidclient2 libqpidcommon2 libqpidmessaging2 libqpidtypes1 python-qpid python-qpid-messaging qpid-tools python-qpid-proton
   - docker pull scholzj/fixml:sim
 
 install:
