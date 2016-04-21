@@ -22,10 +22,10 @@ before_install:
   - sudo add-apt-repository ppa:qpid/testing  --yes
   - sudo apt-get update -q
   - sudo apt-get install -q -y libsasl2-2 libsasl2-modules libsasl2-modules-db libqpid-proton6 libqpidclient2 libqpidcommon2 libqpidmessaging2 libqpidtypes1 python-qpid python-qpid-messaging qpid-tools python-qpid-proton
-  - docker pull scholzj/fixml:sim
+  - docker pull ecmi/fixml:sim
 
 install:
-  - docker run -d -p 35672:5672 -p 35671:5671 scholzj/fixml:sim
+  - docker run -d -p 35672:5672 -p 35671:5671 ecmi/fixml:sim
 
 script:
    - ./run_tests.py
