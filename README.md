@@ -28,7 +28,7 @@ Examples in cpp_binding folder are using the C++ version Qpid Messaging API and 
 - Change the hostname / IP address, port number, paths to the certificates and queue names
 - Run the examples
 
-## SSL
+## SSL (Linux)
 
 The underlying C++ libraries are using the NSS tools to handle SSL. The NSS database has to be prepared before running the client and configured using environment variables.
 
@@ -52,6 +52,57 @@ for example:
 export QPID_SSL_CERT_DB=sql:./tests/resources/
 export QPID_SSL_CERT_PASSWORD_FILE=tests/resources/pwdfile
 export QPID_SSL_CERT_NAME=ABCFR_ABCFRALMMACC1
+```
+
+## SSL (Windows)
+
+The Qpid client application under the Windows can either use certificates for authentication against the broker from the system’s certificate store or the certificates may be provided to the application from files. To use certificates from the system’s store, one has to first properly import them. 
+
+### Broker public key
+
+The public key for verifying the identity of Eurex’s AMQP broker has to be always stored directly in Windows certificate store. To import it, follow these steps:
+
+1. Start the certmgr.msc for managing windows certificates
+2. Expand the Trusted Root Certification Authorities store
+3. Right-click on the Certificates folder and select "Import"
+4. Import the broker public key
+
+### Private key in Windows certificate store
+
+To store the private key in the Windows certificate store and use it in your application, follow these steps:
+
+1. Prepare the private key in PKCS12 file
+2. Double click the PKCS12 file
+3. A dialog window pops up which guides you through the import
+4. Use environment variables to point your application to the private key
+```
+set QPID_SSL_CERT_STORE=<CertificateStore>
+set QPID_SSL_CERT_NAME=<friendlyName>
+```
+For example:
+```
+set QPID_SSL_CERT_STORE=Personal
+set QPID_SSL_CERT_NAME=CN=ABCFR_ABCFRALMMACC1
+```
+
+### Using private key directly from PKCS12 file
+
+The private key can be also used directly from the PKCS12 file.
+
+1. Prepare the private key in PKCS12 file
+2. Create the password file (a text file containing the password to the PKCS12 file)
+3. Use environment variables to point your application to the private key
+```
+set QPID_SSL_CERT_FILENAME=<certificateFile>
+set QPID_SSL_CERT_PASSWORD_FILE=<passwordFile>
+set QPID_SSL_CERT_NAME=<friendlyName>
+```
+
+For example:
+```
+set QPID_SSL_CERT_FILENAME=ABCFR_ABCFRALMMACC1.p12
+set QPID_SSL_CERT_PASSWORD_FILE=ABCFR_ABCFRALMMACC1.pwd
+set QPID_SSL_CERT_NAME=abcfr_abcfralmmacc1
 ```
 
 ## BroadcastReceiver.py
