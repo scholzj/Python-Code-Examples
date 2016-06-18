@@ -1,0 +1,23 @@
+machine:
+  hosts:
+    ecag-fixml-dev1: 127.0.0.1
+  python:
+    version: 2.7
+  services:
+    - docker
+  environment:
+    QPID_SSL_CERT_DB: sql:./tests/resources/
+    QPID_SSL_CERT_PASSWORD_FILE: tests/resources/pwdfile
+    QPID_SSL_CERT_NAME: ABCFR_ABCFRALMMACC1
+
+dependencies:
+  pre:
+    - sudo add-apt-repository ppa:qpid/testing  --yes
+    - sudo apt-get update -q
+    - sudo apt-get install -q -y libsasl2-2 libsasl2-modules libsasl2-modules-db libqpid-proton6 libqpidclient2 libqpidcommon2 libqpidmessaging2 libqpidtypes1 python-qpid python-qpid-messaging qpid-tools python-qpid-proton
+
+test:
+  pre:
+    - docker run -d -p 35672:5672 -p 35671:5671 ecmi/fixml:sim
+  override:
+    - ./run_tests.py
