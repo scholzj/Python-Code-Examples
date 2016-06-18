@@ -1,0 +1,3 @@
+qpid-python
+python-qpid-proton
+qpid-tools
