@@ -21,7 +21,7 @@ addons:
 before_install:
   - sudo add-apt-repository ppa:qpid/testing  --yes
   - sudo apt-get update -q
-  - sudo apt-get install -q -y libsasl2-2 libsasl2-modules libsasl2-modules-db libqpid-proton6 libqpidclient2 libqpidcommon2 libqpidmessaging2 libqpidtypes1 python-qpid python-qpid-messaging qpid-tools python-qpid-proton
+  - sudo apt-get install -q -y libsasl2-2 libsasl2-modules libsasl2-modules-db libqpid-proton6 libqpidclient2 libqpidcommon2 libqpidmessaging2 libqpidtypes1 python-qpid python-qpid-messaging qpid-tools python-qpid-proton python-xmlrunner
   - docker pull ecmi/fixml:sim
 
 install:
