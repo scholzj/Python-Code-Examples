@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
+import inspect
 import unittest
+import xmlrunner
 import sys
 import tests.test_PurePython
 import tests.test_CppBinding
@@ -12,6 +14,8 @@ if __name__ == '__main__':
     suites.append(unittest.TestLoader().loadTestsFromModule(tests.test_CppBinding))
     suites.append(unittest.TestLoader().loadTestsFromModule(tests.test_Proton))
     allTests = unittest.TestSuite(suites)
-
-    result = unittest.TextTestRunner(verbosity=2).run(allTests)
+    if 'verbose' in inspect.getargspec(xmlrunner.XMLTestRunner.__init__).args:
+        result = xmlrunner.XMLTestRunner(output='test-reports', verbose=True).run(allTests)
+    else:
+        result = xmlrunner.XMLTestRunner(output='test-reports', verbosity=2).run(allTests)
     sys.exit(result.wasSuccessful() != True)
