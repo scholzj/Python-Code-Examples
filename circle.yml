@@ -9,6 +9,7 @@ machine:
     QPID_SSL_CERT_DB: sql:./tests/resources/
     QPID_SSL_CERT_PASSWORD_FILE: tests/resources/pwdfile
     QPID_SSL_CERT_NAME: ABCFR_ABCFRALMMACC1
+    PYTHONPATH: /usr/lib/python2.7/dist-packages/
     VIRTUALENV_SYSTEM_SITE_PACKAGES: true
 
 dependencies:
