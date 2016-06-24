@@ -16,13 +16,17 @@ dependencies:
   pre:
     - sudo add-apt-repository ppa:qpid/testing  --yes
     - sudo apt-get update -q
-    - sudo apt-get install -q -y libsasl2-2 libsasl2-modules libsasl2-modules-db libqpid-proton6 libqpidclient2 libqpidcommon2 libqpidmessaging2 libqpidtypes1 python-qpid python-qpid-messaging qpid-tools python-qpid-proton python-xmlrunner
+    - sudo apt-get install -q -y libsasl2-2 libsasl2-modules libsasl2-modules-db libqpid-proton6 libqpidclient2 libqpidcommon2 libqpidmessaging2 libqpidtypes1 python-qpid python-qpid-messaging qpid-tools python-qpid-proton python-xmlrunner python-coverage
 
 test:
   pre:
     - docker run -d -p 35672:5672 -p 35671:5671 ecmi/fixml:sim
   override:
-    - ./run_tests.py
+    - coverage run run_tests.py
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - find . -type f -regex "./test-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+    - coverage html
+    - mkdir -p $CIRCLE_ARTIFACTS/coverage/
+    - cp -r htmlcov/* $CIRCLE_ARTIFACTS/coverage/
+  
