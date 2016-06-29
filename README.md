@@ -153,7 +153,7 @@ This example connects to the broker, sends a request message and waits for a res
 
 # Integration tests
 
-The project is using Travis-CI to run its own integration tests. The tests are executed against Docker images which contain the AMQP broker with configuration corresponding to Eurex Clearing FIXML Interface. The details of the Travis-CI integration can be found in the .travis.yml file.
+The project is using Travis-CI and Circle CI to run its own integration tests. The tests are executed against Docker images which contain the AMQP broker with configuration corresponding to Eurex Clearing FIXML Interface. The details of the Travis-CI and Circle CI integration can be found in the .travis.yml and circle.yml files.
 
 # Documentation
 
