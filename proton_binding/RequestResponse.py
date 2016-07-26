@@ -26,7 +26,7 @@ class Requestor(MessagingHandler):
         ssl.set_trusted_ca_db(str(self.options.brokerPublicKey))
         ssl.set_peer_authentication(SSLDomain.VERIFY_PEER_NAME, trusted_CAs=str(self.options.brokerPublicKey))
 
-        conn = event.container.connect(self.address, ssl_domain=ssl, heartbeat=60000, allowed_mechs=str("EXTERNAL"))
+        conn = event.container.connect(self.address, ssl_domain=ssl, heartbeat=60000, allowed_mechs=str("EXTERNAL"), reconnect=False)
         event.container.create_receiver(conn, self.response_address)
         self.sender = event.container.create_sender(conn, self.request_address)
 
