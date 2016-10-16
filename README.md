@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/Eurex-Clearing-Messaging-Interfaces/Python-Code-Examples.svg?branch=master)](https://travis-ci.org/Eurex-Clearing-Messaging-Interfaces/Python-Code-Examples)
-[![CircleCI](https://circleci.com/gh/Eurex-Clearing-Messaging-Interfaces/Python-Code-Examples.svg?style=svg)](https://circleci.com/gh/Eurex-Clearing-Messaging-Interfaces/Python-Code-Examples)
+[![CircleCI](https://circleci.com/gh/Eurex-Clearing-Messaging-Interfaces/Python-Code-Examples.svg?style=shield)](https://circleci.com/gh/Eurex-Clearing-Messaging-Interfaces/Python-Code-Examples)
 
 # pure_python
 
