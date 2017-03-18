@@ -43,7 +43,7 @@ jobs:
           name: Collect artifacts
           command: |
             export COVERALLS_REPO_TOKEN=${COVERALLS_TOKEN}
-            coveralls
+            coveralls --rcfile=.coveragerc
       - store_test_results:
           path: junit-reports/
       - store_artifacts:
