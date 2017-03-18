@@ -22,6 +22,7 @@ jobs:
             yum -y install epel-release
             yum install -y python-pip
             pip install unittest-xml-reporting
+            pip install coveralls
             yum -y --setopt=tsflag=nodocs install openssl cyrus-sasl cyrus-sasl-md5 cyrus-sasl-plain python-qpid-proton python-qpid python-qpid-messaging python-coverage
       - run:
           name: Run tests
@@ -30,6 +31,20 @@ jobs:
             export QPID_SSL_CERT_PASSWORD_FILE=tests/resources/pwdfile
             export QPID_SSL_CERT_NAME=ABCFR_ABCFRALMMACC1
             coverage run run_tests.py
-#      - run:
-#          name:
-#          command: echo "hello world"
+      - run:
+          name: Collect artifacts
+          command: |
+            mkdir -p ./junit-reports/
+            find . -type f -regex "./test-reports/.*xml" -exec cp {} ./junit-reports/ \;
+            coverage html
+            mkdir -p ./coverage-reports/
+            cp -r htmlcov/* ./coverage-reports/
+      - run:
+          name: Collect artifacts
+          command: |
+            export COVERALLS_REPO_TOKEN=${COVERALLS_TOKEN}
+            coveralls
+      - store_test_results:
+          path: junit-reports/
+      - store_artifacts:
+          path: coverage-reports/
