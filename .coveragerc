@@ -1,0 +1,2 @@
+[run]
+source = cpp_binding,proton_binding,pure_python

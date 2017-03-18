@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/Eurex-Clearing-Messaging-Interfaces/Python-Code-Examples.svg?branch=master)](https://travis-ci.org/Eurex-Clearing-Messaging-Interfaces/Python-Code-Examples)
 [![CircleCI](https://circleci.com/gh/Eurex-Clearing-Messaging-Interfaces/Python-Code-Examples.svg?style=shield)](https://circleci.com/gh/Eurex-Clearing-Messaging-Interfaces/Python-Code-Examples)
+[![Coverage Status](https://coveralls.io/repos/github/Eurex-Clearing-Messaging-Interfaces/Python-Code-Examples/badge.svg?branch=circle-2.0)](https://coveralls.io/github/Eurex-Clearing-Messaging-Interfaces/Python-Code-Examples?branch=circle-2.0)
 
 # pure_python
 
@@ -57,7 +57,7 @@ export QPID_SSL_CERT_NAME=ABCFR_ABCFRALMMACC1
 
 ## SSL (Windows)
 
-The Qpid client application under the Windows can either use certificates for authentication against the broker from the system’s certificate store or the certificates may be provided to the application from files. To use certificates from the system’s store, one has to first properly import them. 
+The Qpid client application under the Windows can either use certificates for authentication against the broker from the system’s certificate store or the certificates may be provided to the application from files. To use certificates from the system’s store, one has to first properly import them.
 
 ### Broker public key
 
