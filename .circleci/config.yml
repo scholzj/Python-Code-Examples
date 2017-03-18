@@ -5,10 +5,10 @@ jobs:
     docker:
       - image: centos:7
     steps:
-      - checkout
       - run:
           name: Install Dependencies
           command: yum install -y git
+      - checkout
       - run: 
           name: Print hello works
           command: echo "hello world"
