@@ -34,8 +34,6 @@ jobs:
       - run:
           name: Collect artifacts
           command: |
-            mkdir -p ./junit-reports/
-            find . -type f -regex "./test-reports/.*xml" -exec cp {} ./junit-reports/ \;
             coverage html
             mkdir -p ./coverage-reports/
             cp -r htmlcov/* ./coverage-reports/
@@ -49,3 +47,6 @@ jobs:
       - store_artifacts:
           path: coverage-reports/
           destination: art1
+      - store_artifacts:
+          path: test-reports/
+          destination: art2
