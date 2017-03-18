@@ -6,9 +6,22 @@ jobs:
       - image: centos:7
     steps:
       - run:
-          name: Install Dependencies
+          name: Install Git
           command: yum install -y git
       - checkout
-      - run: 
-          name: Print hello works
-          command: echo "hello world"
+      - run:
+          name: Install dependencies
+          command: | 
+            curl -o /etc/yum.repos.d/qpid-proton-devel.repo http://repo.effectivemessaging.com/qpid-proton-stable.repo
+            curl -o /etc/yum.repos.d/qpid-cpp-devel.repo http://repo.effectivemessaging.com/qpid-cpp-stable.repo
+            curl -o /etc/yum.repos.d/qpid-python-devel.repo http://repo.effectivemessaging.com/qpid-python-stable.repo
+            yum -y install epel-release
+            yum install -y python-pip
+            pip install unittest-xml-reporting
+            yum -y --setopt=tsflag=nodocs install openssl cyrus-sasl cyrus-sasl-md5 cyrus-sasl-plain python-qpid-proton python-qpid python-qpid-messaging python-coverage
+      - run:
+          name: Run tests
+          command: python-coverage run run_tests.py
+#      - run: 
+#          name: 
+#          command: echo "hello world"
