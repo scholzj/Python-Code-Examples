@@ -1,1 +1,11 @@
 version: 2
+jobs:
+  build:
+    working_directory: ~/circulate
+    docker:
+      - image: centos:7
+    steps:
+      - checkout
+      - run: 
+          name: Print hello works
+          command: echo "hello world"
