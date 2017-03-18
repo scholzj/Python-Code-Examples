@@ -4,7 +4,6 @@ jobs:
     working_directory: ~/circulate
     docker:
       - image: centos:7
-    docker:
       - image: ecmi/fixml:sim
     steps:
       - run:
@@ -16,7 +15,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: | 
+          command: |
             curl -o /etc/yum.repos.d/qpid-proton-devel.repo http://repo.effectivemessaging.com/qpid-proton-stable.repo
             curl -o /etc/yum.repos.d/qpid-cpp-devel.repo http://repo.effectivemessaging.com/qpid-cpp-stable.repo
             curl -o /etc/yum.repos.d/qpid-python-devel.repo http://repo.effectivemessaging.com/qpid-python-stable.repo
@@ -27,6 +26,6 @@ jobs:
       - run:
           name: Run tests
           command: coverage run run_tests.py
-#      - run: 
-#          name: 
+#      - run:
+#          name:
 #          command: echo "hello world"
