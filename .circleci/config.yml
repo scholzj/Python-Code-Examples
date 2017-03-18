@@ -21,7 +21,7 @@ jobs:
             yum -y --setopt=tsflag=nodocs install openssl cyrus-sasl cyrus-sasl-md5 cyrus-sasl-plain python-qpid-proton python-qpid python-qpid-messaging python-coverage
       - run:
           name: Run tests
-          command: python-coverage run run_tests.py
+          command: coverage run run_tests.py
 #      - run: 
 #          name: 
 #          command: echo "hello world"
