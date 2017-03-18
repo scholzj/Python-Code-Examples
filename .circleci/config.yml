@@ -4,10 +4,15 @@ jobs:
     working_directory: ~/circulate
     docker:
       - image: centos:7
+    docker:
+      - image: ecmi/fixml:sim
     steps:
       - run:
           name: Install Git
           command: yum install -y git
+      - run:
+          name: Add hosts record
+          command: echo 127.0.0.1 ecag-fixml-dev1 | sudo tee -a /etc/hosts
       - checkout
       - run:
           name: Install dependencies

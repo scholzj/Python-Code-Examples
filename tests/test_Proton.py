@@ -15,7 +15,7 @@ from utils.Broadcaster import Broadcaster
 class ProtonTests(unittest.TestCase):
     def setUp(self):
         hostname = "ecag-fixml-dev1"
-        port = 35671
+        port = 5671
         accountName = "ABCFR_ABCFRALMMACC1"
         accountPrivateKey = "./tests/resources/ABCFR_ABCFRALMMACC1.pem"
         accountPublicKey = "./tests/resources/ABCFR_ABCFRALMMACC1.crt"
@@ -24,7 +24,7 @@ class ProtonTests(unittest.TestCase):
         self.options = Options(hostname, port, accountName, accountPublicKey, accountPrivateKey, brokerPublicKey, timeout)
 
     def test_broadcastReceiver(self):
-        broadcaster = Broadcaster(self.options.hostname, 35672, "admin", "admin", "broadcast", "broadcast.ABCFR.TradeConfirmation", 1)
+        broadcaster = Broadcaster(self.options.hostname, 5672, "admin", "admin", "broadcast", "broadcast.ABCFR.TradeConfirmation", 1)
         broadcaster.run()
 
         br = BroadcastReceiver(self.options)
@@ -33,7 +33,7 @@ class ProtonTests(unittest.TestCase):
         self.assertGreaterEqual(br.message_counter, 1)
 
     def test_requestResponse(self):
-        responder = Responder(self.options.hostname, 35672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1", 5)
+        responder = Responder(self.options.hostname, 5672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1", 5)
         responder.start()
 
         rr = RequestResponse(self.options)
@@ -42,7 +42,7 @@ class ProtonTests(unittest.TestCase):
         self.assertGreaterEqual(rr.message_counter, 1)
 
     def test_blockingBroadcastReceiver(self):
-        broadcaster = Broadcaster(self.options.hostname, 35672, "admin", "admin", "broadcast",
+        broadcaster = Broadcaster(self.options.hostname, 5672, "admin", "admin", "broadcast",
                                   "broadcast.ABCFR.TradeConfirmation", 1)
         broadcaster.run()
 
@@ -52,7 +52,7 @@ class ProtonTests(unittest.TestCase):
         self.assertGreaterEqual(br.message_counter, 1)
 
     def test_blockingRequestResponse(self):
-        responder = Responder(self.options.hostname, 35672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1", 5)
+        responder = Responder(self.options.hostname, 5672, "admin", "admin", "request_be.ABCFR_ABCFRALMMACC1", 5)
         responder.start()
 
         rr = BlockingRequestResponse(self.options)
