@@ -30,7 +30,7 @@ jobs:
             export QPID_SSL_CERT_DB=sql:./tests/resources/
             export QPID_SSL_CERT_PASSWORD_FILE=tests/resources/pwdfile
             export QPID_SSL_CERT_NAME=ABCFR_ABCFRALMMACC1
-            coverage run run_tests.py
+            ./run_tests.py
       - run:
           name: Collect artifacts
           command: |
